@@ -6,11 +6,11 @@ import { BuilderPanel } from "./components/builder/BuilderPanel";
 import { PortfolioPreview } from "./components/portfolio/PortfolioPreview";
 import { Button } from "./components/ui";
 
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { portfolio } = usePortfolio();
-  if (!portfolio.name) return <Navigate to="/" replace />;
-  return <>{children}</>;
-}
+// function ProtectedRoute({ children }: { children: React.ReactNode }) {
+//   const { portfolio } = usePortfolio();
+//   if (!portfolio.name) return <Navigate to="/" replace />;
+//   return <>{children}</>;
+// }
 
 function BuilderPage() {
   const { isSaved } = usePortfolio();

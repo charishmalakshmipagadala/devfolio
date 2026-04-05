@@ -1,4 +1,4 @@
-// import { Button } from "../ui";
+import { Button } from "../ui";
 
 interface LandingPageProps {
   onGetStarted: () => void;
@@ -49,7 +49,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           DevFolio
         </div>
         <div style={{ display: "flex", gap: 12 }}>
-          <button
+          <Button
             onClick={onGetStarted}
             style={{
               background: "transparent",
@@ -62,8 +62,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             }}
           >
             Sign In
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={onGetStarted}
             style={{
               background: "linear-gradient(135deg, #6366f1, #4f46e5)",
@@ -77,7 +77,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             }}
           >
             Get Started →
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -154,7 +154,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             justifyContent: "center",
           }}
         >
-          <button
+          <Button
             onClick={onGetStarted}
             style={{
               background: "linear-gradient(135deg, #6366f1, #4f46e5)",
@@ -168,8 +168,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             }}
           >
             Build My Portfolio →
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={onGetStarted}
             style={{
               background: "transparent",
@@ -182,7 +182,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             }}
           >
             See Example
-          </button>
+          </Button>
         </div>
 
         {/* Features grid */}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "../ui";
 import { BasicTab } from "./tabs/BasicTab";
 import { SkillsTab } from "./tabs/SkillsTab";
 import { ProjectsTab } from "./tabs/ProjectsTab";
@@ -38,25 +39,15 @@ export function BuilderPanel() {
       {/* Tab bar */}
       <div style={{ display: "flex", borderBottom: "1px solid #1f2937", overflowX: "auto", flexShrink: 0, paddingLeft: 4 }}>
         {tabs.map((tab) => (
-          <button
+          <Button
             key={tab.id}
+            variant="tab"
+            size="sm"
+            active={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
-            style={{
-              padding: "12px 16px",
-              fontSize: 13,
-              fontWeight: 500,
-              whiteSpace: "nowrap",
-              background: "transparent",
-              border: "none",
-              borderBottom: activeTab === tab.id ? "2px solid #6366f1" : "2px solid transparent",
-              color: activeTab === tab.id ? "#6366f1" : "#64748b",
-              cursor: "pointer",
-              fontFamily: "inherit",
-              marginBottom: -1,
-            }}
           >
             {tab.label}
-          </button>
+          </Button>
         ))}
       </div>
 

@@ -2,9 +2,10 @@ import { type ButtonHTMLAttributes, type ReactNode } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: "primary" | "secondary" | "ghost" | "danger";
+  variant?: "primary" | "secondary" | "ghost" | "danger" | "tab";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
+  active?: boolean;
 }
 
 const variantStyles = {
@@ -28,6 +29,11 @@ const variantStyles = {
     color: "#f87171",
     border: "1px solid rgba(239,68,68,0.3)",
   },
+  tab: {
+    background: "transparent",
+    color: "#64748b",
+    border: "none",
+  },
 };
 
 const sizeStyles = {
@@ -41,20 +47,26 @@ export function Button({
   variant = "primary",
   size = "md",
   fullWidth = false,
+  active,
   style,
   ...props
 }: ButtonProps) {
+  const isTab = variant === "tab";
   return (
     <button
       style={{
         ...variantStyles[variant],
         ...sizeStyles[size],
-        borderRadius: 8,
-        fontWeight: 600,
+        borderRadius: isTab ? 0 : 8,
+        fontWeight: isTab ? 500 : 600,
         cursor: "pointer",
         fontFamily: "inherit",
         transition: "opacity .2s, transform .1s",
         width: fullWidth ? "100%" : "auto",
+        whiteSpace: isTab ? "nowrap" : undefined,
+        borderBottom: isTab ? (active ? "2px solid #6366f1" : "2px solid transparent") : undefined,
+        color: isTab ? (active ? "#6366f1" : "#64748b") : variantStyles[variant].color,
+        marginBottom: isTab ? -1 : undefined,
         ...style,
       }}
       onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
