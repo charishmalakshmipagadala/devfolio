@@ -34,21 +34,26 @@ export function BuilderPanel() {
   };
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
+    <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {/* Tab bar */}
-      <div className="flex border-b border-dark-700 overflow-x-auto flex-shrink-0">
+      <div style={{ display: "flex", borderBottom: "1px solid #1f2937", overflowX: "auto", flexShrink: 0, paddingLeft: 4 }}>
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`
-              px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px
-              ${
-                activeTab === tab.id
-                  ? "text-brand border-brand"
-                  : "text-slate-500 border-transparent hover:text-slate-300"
-              }
-            `}
+            style={{
+              padding: "12px 16px",
+              fontSize: 13,
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+              background: "transparent",
+              border: "none",
+              borderBottom: activeTab === tab.id ? "2px solid #6366f1" : "2px solid transparent",
+              color: activeTab === tab.id ? "#6366f1" : "#64748b",
+              cursor: "pointer",
+              fontFamily: "inherit",
+              marginBottom: -1,
+            }}
           >
             {tab.label}
           </button>
@@ -56,7 +61,7 @@ export function BuilderPanel() {
       </div>
 
       {/* Tab content */}
-      <div className="flex-1 overflow-y-auto p-5">{renderTab()}</div>
+      <div style={{ flex: 1, overflowY: "auto", padding: "20px 20px" }}>{renderTab()}</div>
     </div>
   );
 }

@@ -6,7 +6,6 @@ import { BuilderPanel } from "./components/builder/BuilderPanel";
 import { PortfolioPreview } from "./components/portfolio/PortfolioPreview";
 import { Button } from "./components/ui";
 
-// Protected route — redirects to landing if no portfolio name set yet
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { portfolio } = usePortfolio();
   if (!portfolio.name) return <Navigate to="/" replace />;
@@ -19,19 +18,46 @@ function BuilderPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }}
+    >
       {/* Header */}
-      <div className="flex justify-between items-center px-5 py-3 bg-dark-800 border-b border-dark-700 flex-shrink-0">
-        <div className="flex items-center gap-4">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "12px 20px",
+          background: "#111827",
+          borderBottom: "1px solid #1f2937",
+          flexShrink: 0,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
             ← Home
           </Button>
-          <span className="text-base font-black bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
+          <span
+            style={{
+              fontSize: 16,
+              fontWeight: 900,
+              background: "linear-gradient(135deg, #6366f1, #a78bfa)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
             DevFolio
           </span>
-          {isSaved && <span className="text-xs text-green-400">✓ Saved</span>}
+          {isSaved && (
+            <span style={{ fontSize: 12, color: "#4ade80" }}>✓ Saved</span>
+          )}
         </div>
-        <div className="flex gap-2">
+        <div style={{ display: "flex", gap: 8 }}>
           <Button
             variant="ghost"
             size="sm"
@@ -47,14 +73,37 @@ function BuilderPage() {
 
       {/* Body */}
       <div
-        className={`flex-1 grid overflow-hidden ${splitView ? "grid-cols-2" : "grid-cols-1"}`}
+        style={{
+          flex: 1,
+          display: "grid",
+          gridTemplateColumns: splitView ? "1fr 1fr" : "1fr",
+          overflow: "hidden",
+        }}
       >
-        <div className="border-r border-dark-700 overflow-hidden flex flex-col">
+        <div
+          style={{
+            borderRight: "1px solid #1f2937",
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <BuilderPanel />
         </div>
         {splitView && (
-          <div className="overflow-auto">
-            <div className="px-4 py-2 bg-dark-800 border-b border-dark-700 text-xs text-slate-500 font-semibold uppercase tracking-widest">
+          <div style={{ overflowY: "auto" }}>
+            <div
+              style={{
+                padding: "8px 16px",
+                background: "#111827",
+                borderBottom: "1px solid #1f2937",
+                fontSize: 11,
+                color: "#64748b",
+                fontWeight: 700,
+                letterSpacing: 2,
+                textTransform: "uppercase" as const,
+              }}
+            >
               Live Preview
             </div>
             <PortfolioPreview />
@@ -71,19 +120,32 @@ function PreviewPage() {
   const slug = portfolio.name.toLowerCase().replace(/\s+/g, "") || "yourname";
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex justify-between items-center px-5 py-3 bg-dark-800 border-b border-dark-700 flex-shrink-0">
+    <div
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "10px 20px",
+          background: "#111827",
+          borderBottom: "1px solid #1f2937",
+        }}
+      >
         <Button variant="ghost" size="sm" onClick={() => navigate("/builder")}>
-          ← Back to Builder
+          ← Back
         </Button>
-        <span className="text-xs text-brand font-mono">
+        <span
+          style={{ fontSize: 12, color: "#6366f1", fontFamily: "monospace" }}
+        >
           devfolio.app/{slug}
         </span>
-        <span className="text-xs text-green-400 font-medium">
+        <span style={{ fontSize: 12, color: "#4ade80", fontWeight: 600 }}>
           ✓ Live Preview
         </span>
       </div>
-      <div className="flex-1">
+      <div style={{ flex: 1 }}>
         <PortfolioPreview />
       </div>
     </div>

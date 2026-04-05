@@ -73,7 +73,7 @@ export function BasicTab() {
   }, [values.website]);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <Section title="Profile">
         <Input
           label="Full Name"
@@ -125,16 +125,10 @@ export function BasicTab() {
   );
 }
 
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-3">
-      <div className="text-xs font-bold text-brand uppercase tracking-widest">
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: 2 }}>
         {title}
       </div>
       {children}

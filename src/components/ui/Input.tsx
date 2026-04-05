@@ -10,53 +10,96 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: string;
 }
 
-const baseClass = `
-  w-full bg-dark-800 border border-dark-700 text-slate-200
-  px-3 py-2 rounded-lg text-sm outline-none transition-colors
-  focus:border-brand placeholder:text-slate-600
-`;
+const baseStyle = {
+  width: "100%",
+  background: "#111827",
+  border: "1px solid #1f2937",
+  color: "#e2e8f0",
+  padding: "8px 12px",
+  borderRadius: 8,
+  fontSize: 14,
+  outline: "none",
+  fontFamily: "inherit",
+  transition: "border-color .2s",
+};
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className = "", ...props }, ref) => {
+  ({ label, error, style, ...props }, ref) => {
     return (
-      <div className="flex flex-col gap-1">
+      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         {label && (
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <label
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: "#64748b",
+              textTransform: "uppercase",
+              letterSpacing: 1,
+            }}
+          >
             {label}
           </label>
         )}
         <input
           ref={ref}
-          className={`${baseClass} ${error ? "border-red-500" : ""} ${className}`}
+          style={{
+            ...baseStyle,
+            borderColor: error ? "#ef4444" : "#1f2937",
+            ...style,
+          }}
+          onFocus={(e) => (e.target.style.borderColor = "#6366f1")}
+          onBlur={(e) =>
+            (e.target.style.borderColor = error ? "#ef4444" : "#1f2937")
+          }
           {...props}
         />
-        {error && <span className="text-xs text-red-400">{error}</span>}
+        {error && (
+          <span style={{ fontSize: 12, color: "#f87171" }}>{error}</span>
+        )}
       </div>
     );
   },
 );
-
 Input.displayName = "Input";
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ label, error, className = "", ...props }, ref) => {
+  ({ label, error, style, ...props }, ref) => {
     return (
-      <div className="flex flex-col gap-1">
+      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         {label && (
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <label
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: "#64748b",
+              textTransform: "uppercase",
+              letterSpacing: 1,
+            }}
+          >
             {label}
           </label>
         )}
         <textarea
           ref={ref}
           rows={3}
-          className={`${baseClass} resize-vertical min-h-[80px] ${error ? "border-red-500" : ""} ${className}`}
+          style={{
+            ...baseStyle,
+            resize: "vertical",
+            minHeight: 80,
+            borderColor: error ? "#ef4444" : "#1f2937",
+            ...style,
+          }}
+          onFocus={(e) => (e.target.style.borderColor = "#6366f1")}
+          onBlur={(e) =>
+            (e.target.style.borderColor = error ? "#ef4444" : "#1f2937")
+          }
           {...props}
         />
-        {error && <span className="text-xs text-red-400">{error}</span>}
+        {error && (
+          <span style={{ fontSize: 12, color: "#f87171" }}>{error}</span>
+        )}
       </div>
     );
   },
 );
-
 TextArea.displayName = "TextArea";

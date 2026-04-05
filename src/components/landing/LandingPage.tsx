@@ -1,4 +1,4 @@
-import { Button } from "../ui";
+// import { Button } from "../ui";
 
 interface LandingPageProps {
   onGetStarted: () => void;
@@ -19,61 +19,207 @@ const features = [
 
 export function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
-    <div className="min-h-screen bg-dark-900 flex flex-col">
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#0a0a0f",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       {/* Nav */}
-      <nav className="flex justify-between items-center px-8 py-4 border-b border-dark-700">
-        <div className="text-xl font-black bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
+      <nav
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "16px 32px",
+          borderBottom: "1px solid #1f2937",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 20,
+            fontWeight: 900,
+            background: "linear-gradient(135deg, #6366f1, #a78bfa)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
           DevFolio
         </div>
-        <div className="flex gap-3">
-          <Button variant="ghost" size="sm" onClick={onGetStarted}>
+        <div style={{ display: "flex", gap: 12 }}>
+          <button
+            onClick={onGetStarted}
+            style={{
+              background: "transparent",
+              color: "#94a3b8",
+              padding: "8px 16px",
+              border: "1px solid #1f2937",
+              borderRadius: 8,
+              cursor: "pointer",
+              fontSize: 14,
+            }}
+          >
             Sign In
-          </Button>
-          <Button size="sm" onClick={onGetStarted}>
+          </button>
+          <button
+            onClick={onGetStarted}
+            style={{
+              background: "linear-gradient(135deg, #6366f1, #4f46e5)",
+              color: "#fff",
+              padding: "8px 20px",
+              border: "none",
+              borderRadius: 8,
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 600,
+            }}
+          >
             Get Started →
-          </Button>
+          </button>
         </div>
       </nav>
 
       {/* Hero */}
-      <div className="flex-1 flex flex-col items-center justify-center text-center px-6 py-20">
-        <div className="inline-block px-4 py-1 rounded-full bg-brand/10 border border-brand/20 text-brand-light text-xs font-semibold uppercase tracking-widest mb-8">
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: "80px 24px",
+        }}
+      >
+        <div
+          style={{
+            display: "inline-block",
+            padding: "4px 16px",
+            borderRadius: 20,
+            background: "rgba(99,102,241,0.1)",
+            border: "1px solid rgba(99,102,241,0.2)",
+            color: "#818cf8",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: 3,
+            textTransform: "uppercase",
+            marginBottom: 32,
+          }}
+        >
           For Developers, By a Developer
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6 max-w-3xl">
+        <h1
+          style={{
+            fontSize: "clamp(40px, 7vw, 72px)",
+            fontWeight: 900,
+            lineHeight: 1.1,
+            marginBottom: 24,
+            maxWidth: 700,
+            color: "#f1f5f9",
+          }}
+        >
           Your portfolio,{" "}
-          <span className="bg-gradient-to-r from-brand to-purple-400 bg-clip-text text-transparent">
+          <span
+            style={{
+              background: "linear-gradient(135deg, #6366f1, #a78bfa)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
             built in minutes.
           </span>
         </h1>
 
-        <p className="text-lg text-slate-400 max-w-xl leading-relaxed mb-10">
+        <p
+          style={{
+            fontSize: 18,
+            color: "#94a3b8",
+            maxWidth: 480,
+            lineHeight: 1.8,
+            marginBottom: 48,
+          }}
+        >
           Fill in your details, pick a theme, and get a beautiful shareable
           portfolio page. No code. No Figma. No wrestling with templates.
         </p>
 
-        <div className="flex gap-3 flex-wrap justify-center">
-          <Button size="lg" onClick={onGetStarted}>
+        <div
+          style={{
+            display: "flex",
+            gap: 12,
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <button
+            onClick={onGetStarted}
+            style={{
+              background: "linear-gradient(135deg, #6366f1, #4f46e5)",
+              color: "#fff",
+              padding: "14px 32px",
+              border: "none",
+              borderRadius: 10,
+              cursor: "pointer",
+              fontSize: 16,
+              fontWeight: 700,
+            }}
+          >
             Build My Portfolio →
-          </Button>
-          <Button size="lg" variant="ghost" onClick={onGetStarted}>
+          </button>
+          <button
+            onClick={onGetStarted}
+            style={{
+              background: "transparent",
+              color: "#94a3b8",
+              padding: "14px 32px",
+              border: "1px solid #1f2937",
+              borderRadius: 10,
+              cursor: "pointer",
+              fontSize: 16,
+            }}
+          >
             See Example
-          </Button>
+          </button>
         </div>
 
         {/* Features grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-20 w-full max-w-2xl">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: 16,
+            marginTop: 80,
+            width: "100%",
+            maxWidth: 720,
+          }}
+        >
           {features.map((f, i) => (
             <div
               key={i}
-              className="bg-dark-800 border border-dark-700 rounded-xl p-5 text-left hover:border-brand/40 transition-colors"
+              style={{
+                background: "#111827",
+                border: "1px solid #1f2937",
+                borderRadius: 12,
+                padding: 20,
+                textAlign: "left",
+                transition: "border-color .2s",
+              }}
             >
-              <div className="text-2xl mb-3">{f.icon}</div>
-              <div className="font-semibold text-sm text-slate-200 mb-1">
+              <div style={{ fontSize: 24, marginBottom: 10 }}>{f.icon}</div>
+              <div
+                style={{
+                  fontWeight: 700,
+                  fontSize: 14,
+                  color: "#f1f5f9",
+                  marginBottom: 4,
+                }}
+              >
                 {f.title}
               </div>
-              <div className="text-xs text-slate-500 leading-relaxed">
+              <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.6 }}>
                 {f.desc}
               </div>
             </div>
@@ -82,7 +228,15 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </div>
 
       {/* Footer */}
-      <div className="text-center py-6 text-xs text-slate-600 border-t border-dark-700">
+      <div
+        style={{
+          textAlign: "center",
+          padding: "24px",
+          fontSize: 12,
+          color: "#374151",
+          borderTop: "1px solid #1f2937",
+        }}
+      >
         Built with React · TypeScript · Tailwind — by a developer learning in
         public
       </div>
