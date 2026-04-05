@@ -100,14 +100,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<LandingWrapper />} />
       <Route path="/builder" element={<BuilderPage />} />
-      <Route
-        path="/preview"
-        element={
-          <ProtectedRoute>
-            <PreviewPage />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/preview" element={<PreviewPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
