@@ -99,14 +99,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingWrapper />} />
-      <Route
-        path="/builder"
-        element={
-          <ProtectedRoute>
-            <BuilderPage />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/builder" element={<BuilderPage />} />
       <Route
         path="/preview"
         element={
