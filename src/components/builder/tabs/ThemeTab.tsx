@@ -1,68 +1,51 @@
-import { usePortfolio } from "../../../context/PortfolioContext";
+import { usePortfolioStore } from "../../../store/portfolioStore";
 import { type Theme } from "../../../types/portfolio";
 
 const themes: { id: Theme; label: string; desc: string; preview: string }[] = [
-  {
-    id: "dark",
-    label: "Dark Pro",
-    desc: "Dark background with indigo accents",
-    preview: "#0a0a0f",
-  },
-  {
-    id: "minimal",
-    label: "Minimal",
-    desc: "Clean white with lots of space",
-    preview: "#ffffff",
-  },
-  {
-    id: "purple",
-    label: "Purple Night",
-    desc: "Deep purple with violet accents",
-    preview: "#0f0a1e",
-  },
+  { id: "dark", label: "Dark Pro", desc: "Dark background with indigo accents", preview: "#0a0a0f" },
+  { id: "minimal", label: "Minimal", desc: "Clean white with lots of space", preview: "#ffffff" },
+  { id: "purple", label: "Purple Night", desc: "Deep purple with violet accents", preview: "#0f0a1e" },
 ];
 
 export function ThemeTab() {
-  const { portfolio, dispatch } = usePortfolio();
+  const portfolio = usePortfolioStore((s) => s.portfolio);
+  const setField = usePortfolioStore((s) => s.setField);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="text-xs font-bold text-brand uppercase tracking-widest">
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: 2 }}>
         Choose Theme
       </div>
 
-      {themes.map((theme) => (
-        <div
-          key={theme.id}
-          onClick={() =>
-            dispatch({ type: "SET_FIELD", field: "theme", value: theme.id })
-          }
-          className={`
-            flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all
-            ${
-              portfolio.theme === theme.id
-                ? "border-brand bg-brand/10"
-                : "border-dark-700 bg-dark-800 hover:border-dark-600"
-            }
-          `}
-        >
+      {themes.map((theme) => {
+        const isActive = portfolio.theme === theme.id;
+        return (
           <div
-            className="w-10 h-10 rounded-lg border border-dark-600 flex-shrink-0"
-            style={{ background: theme.preview }}
-          />
-          <div>
-            <div
-              className={`font-semibold text-sm ${portfolio.theme === theme.id ? "text-brand-light" : "text-slate-200"}`}
-            >
-              {theme.label}
+            key={theme.id}
+            onClick={() => setField("theme", theme.id)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 16,
+              padding: 16,
+              borderRadius: 12,
+              border: isActive ? "2px solid #6366f1" : "2px solid #1f2937",
+              background: isActive ? "rgba(99,102,241,0.1)" : "#111827",
+              cursor: "pointer",
+              transition: "border-color .2s",
+            }}
+          >
+            <div style={{ width: 40, height: 40, borderRadius: 8, border: "1px solid #374151", flexShrink: 0, background: theme.preview }} />
+            <div>
+              <div style={{ fontWeight: 600, fontSize: 14, color: isActive ? "#818cf8" : "#e2e8f0" }}>
+                {theme.label}
+              </div>
+              <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>{theme.desc}</div>
             </div>
-            <div className="text-xs text-slate-500 mt-0.5">{theme.desc}</div>
+            {isActive && <div style={{ marginLeft: "auto", color: "#6366f1", fontSize: 18 }}>✓</div>}
           </div>
-          {portfolio.theme === theme.id && (
-            <div className="ml-auto text-brand text-lg">✓</div>
-          )}
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

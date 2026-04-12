@@ -1,21 +1,23 @@
 import { useState } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import { usePortfolio } from "./context/PortfolioContext";
+import { usePortfolioStore } from "./store/portfolioStore";
+import { useAutoSave } from "./hooks/useAutoSave";
 import { LandingPage } from "./components/landing/LandingPage";
 import { BuilderPanel } from "./components/builder/BuilderPanel";
 import { PortfolioPreview } from "./components/portfolio/PortfolioPreview";
 import { Button } from "./components/ui";
 
-// function ProtectedRoute({ children }: { children: React.ReactNode }) {
-//   const { portfolio } = usePortfolio();
-//   if (!portfolio.name) return <Navigate to="/" replace />;
-//   return <>{children}</>;
-// }
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const portfolio = usePortfolioStore((state) => state.portfolio);
+  if (!portfolio.name) return <Navigate to="/" replace />;
+  return <>{children}</>;
+}
 
 function BuilderPage() {
-  const { isSaved } = usePortfolio();
+  const isSaved = usePortfolioStore((state) => state.isSaved);
   const [splitView, setSplitView] = useState(true);
   const navigate = useNavigate();
+  useAutoSave();
 
   return (
     <div
@@ -26,7 +28,6 @@ function BuilderPage() {
         overflow: "hidden",
       }}
     >
-      {/* Header */}
       <div
         style={{
           display: "flex",
@@ -71,7 +72,6 @@ function BuilderPage() {
         </div>
       </div>
 
-      {/* Body */}
       <div
         style={{
           flex: 1,
@@ -115,7 +115,7 @@ function BuilderPage() {
 }
 
 function PreviewPage() {
-  const { portfolio } = usePortfolio();
+  const portfolio = usePortfolioStore((state) => state.portfolio);
   const navigate = useNavigate();
   const slug = portfolio.name.toLowerCase().replace(/\s+/g, "") || "yourname";
 

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { usePortfolio } from "../../../context/PortfolioContext";
+import { usePortfolioStore } from "../../../store/portfolioStore";
 import { Input, TextArea } from "../../ui";
 
 const basicSchema = z.object({
@@ -21,7 +21,9 @@ const basicSchema = z.object({
 type BasicFormData = z.infer<typeof basicSchema>;
 
 export function BasicTab() {
-  const { portfolio, dispatch } = usePortfolio();
+  const portfolio = usePortfolioStore((s) => s.portfolio);
+  const setField = usePortfolioStore((s) => s.setField);
+  const setSocial = usePortfolioStore((s) => s.setSocial);
 
   const {
     register,
@@ -41,36 +43,16 @@ export function BasicTab() {
     mode: "onChange",
   });
 
-  // Watch every field and sync to context in real time
+  // Watch every field and sync to store in real time
   const values = watch();
 
-  useEffect(() => {
-    dispatch({ type: "SET_FIELD", field: "name", value: values.name });
-  }, [values.name]);
-
-  useEffect(() => {
-    dispatch({ type: "SET_FIELD", field: "title", value: values.title });
-  }, [values.title]);
-
-  useEffect(() => {
-    dispatch({ type: "SET_FIELD", field: "bio", value: values.bio });
-  }, [values.bio]);
-
-  useEffect(() => {
-    dispatch({ type: "SET_FIELD", field: "email", value: values.email });
-  }, [values.email]);
-
-  useEffect(() => {
-    dispatch({ type: "SET_SOCIAL", field: "github", value: values.github });
-  }, [values.github]);
-
-  useEffect(() => {
-    dispatch({ type: "SET_SOCIAL", field: "linkedin", value: values.linkedin });
-  }, [values.linkedin]);
-
-  useEffect(() => {
-    dispatch({ type: "SET_SOCIAL", field: "website", value: values.website });
-  }, [values.website]);
+  useEffect(() => { setField("name", values.name); }, [values.name]);
+  useEffect(() => { setField("title", values.title); }, [values.title]);
+  useEffect(() => { setField("bio", values.bio); }, [values.bio]);
+  useEffect(() => { setField("email", values.email); }, [values.email]);
+  useEffect(() => { setSocial("github", values.github); }, [values.github]);
+  useEffect(() => { setSocial("linkedin", values.linkedin); }, [values.linkedin]);
+  useEffect(() => { setSocial("website", values.website); }, [values.website]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>

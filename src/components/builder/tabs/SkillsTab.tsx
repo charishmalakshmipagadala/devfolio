@@ -1,87 +1,120 @@
-import { usePortfolio } from "../../../context/PortfolioContext";
+import { useSkills } from "../../../hooks/useSkills";
 import { Button, Input } from "../../ui";
-import { type Skill } from "../../../types/portfolio";
 
 export function SkillsTab() {
-  const { portfolio, dispatch } = usePortfolio();
-
-  function addSkill() {
-    const newSkill: Skill = {
-      id: crypto.randomUUID(),
-      name: "",
-      level: 50,
-    };
-    dispatch({ type: "ADD_SKILL", skill: newSkill });
-  }
+  const {
+    skills,
+    handleAdd,
+    handleUpdateName,
+    handleUpdateLevel,
+    removeSkill,
+  } = useSkills();
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
-        <div className="text-xs font-bold text-brand uppercase tracking-widest">
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: "#6366f1",
+            textTransform: "uppercase" as const,
+            letterSpacing: 2,
+          }}
+        >
           Skills
         </div>
-        <Button size="sm" variant="secondary" onClick={addSkill}>
+        <Button size="sm" variant="secondary" onClick={handleAdd}>
           + Add Skill
         </Button>
       </div>
 
-      {portfolio.skills.length === 0 && (
-        <div className="text-center py-10 text-slate-600 text-sm">
+      {skills.length === 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "40px 0",
+            color: "#4b5563",
+            fontSize: 14,
+          }}
+        >
           No skills yet. Add your first one.
         </div>
       )}
 
-      {portfolio.skills.map((skill) => (
+      {skills.map((skill) => (
         <div
           key={skill.id}
-          className="bg-dark-800 border border-dark-700 rounded-xl p-4 flex flex-col gap-3"
+          style={{
+            background: "#111827",
+            border: "1px solid #1f2937",
+            borderRadius: 12,
+            padding: 16,
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+          }}
         >
-          <div className="flex gap-2 items-center">
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <Input
               placeholder="e.g. React"
               value={skill.name}
-              onChange={(e) =>
-                dispatch({
-                  type: "UPDATE_SKILL",
-                  id: skill.id,
-                  data: { name: e.target.value },
-                })
-              }
+              onChange={(e) => handleUpdateName(skill.id, e.target.value)}
             />
             <Button
               variant="danger"
               size="sm"
-              onClick={() => dispatch({ type: "REMOVE_SKILL", id: skill.id })}
+              onClick={() => removeSkill(skill.id)}
             >
               ✕
             </Button>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <input
               type="range"
               min={10}
               max={100}
               value={skill.level}
               onChange={(e) =>
-                dispatch({
-                  type: "UPDATE_SKILL",
-                  id: skill.id,
-                  data: { level: Number(e.target.value) },
-                })
+                handleUpdateLevel(skill.id, Number(e.target.value))
               }
-              className="flex-1 accent-brand"
+              style={{ flex: 1, accentColor: "#6366f1" }}
             />
-            <span className="text-xs text-slate-400 w-8 text-right">
+            <span
+              style={{
+                fontSize: 12,
+                color: "#94a3b8",
+                minWidth: 32,
+                textAlign: "right",
+              }}
+            >
               {skill.level}%
             </span>
           </div>
 
-          {/* Live skill bar preview */}
-          <div className="h-1.5 bg-dark-700 rounded-full overflow-hidden">
+          <div
+            style={{
+              height: 6,
+              background: "#1f2937",
+              borderRadius: 4,
+              overflow: "hidden",
+            }}
+          >
             <div
-              className="h-full bg-gradient-to-r from-brand to-purple-500 rounded-full transition-all duration-300"
-              style={{ width: `${skill.level}%` }}
+              style={{
+                height: "100%",
+                width: `${skill.level}%`,
+                background: "linear-gradient(90deg, #6366f1, #8b5cf6)",
+                borderRadius: 4,
+                transition: "width .3s ease",
+              }}
             />
           </div>
         </div>
