@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { usePortfolioStore } from "./store/portfolioStore";
+import { useAuthStore } from "./store/authStore";
 import { useAutoSave } from "./hooks/useAutoSave";
 import { LandingPage } from "./components/landing/LandingPage";
 import { BuilderPanel } from "./components/builder/BuilderPanel";
@@ -15,9 +16,15 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function BuilderPage() {
   const isSaved = usePortfolioStore((state) => state.isSaved);
+  const { user, isAuthenticated, logout } = useAuthStore();
   const [splitView, setSplitView] = useState(true);
   const navigate = useNavigate();
   useAutoSave();
+
+  async function handleLogout() {
+    await logout();
+    navigate("/");
+  }
 
   return (
     <div
@@ -28,6 +35,7 @@ function BuilderPage() {
         overflow: "hidden",
       }}
     >
+      {/* Header */}
       <div
         style={{
           display: "flex",
@@ -58,7 +66,12 @@ function BuilderPage() {
             <span style={{ fontSize: 12, color: "#4ade80" }}>✓ Saved</span>
           )}
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {isAuthenticated && user && (
+            <span style={{ fontSize: 12, color: "#64748b" }}>
+              👋 {user.name.split(" ")[0]}
+            </span>
+          )}
           <Button
             variant="ghost"
             size="sm"
@@ -69,9 +82,15 @@ function BuilderPage() {
           <Button size="sm" onClick={() => navigate("/preview")}>
             View Live →
           </Button>
+          {isAuthenticated && (
+            <Button variant="danger" size="sm" onClick={handleLogout}>
+              Logout
+            </Button>
+          )}
         </div>
       </div>
 
+      {/* Body */}
       <div
         style={{
           flex: 1,
@@ -161,8 +180,22 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingWrapper />} />
-      <Route path="/builder" element={<BuilderPage />} />
-      <Route path="/preview" element={<PreviewPage />} />
+      <Route
+        path="/builder"
+        element={
+          <ProtectedRoute>
+            <BuilderPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/preview"
+        element={
+          <ProtectedRoute>
+            <PreviewPage />
+          </ProtectedRoute>
+        }
+      />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

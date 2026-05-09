@@ -1,4 +1,5 @@
-import { Button } from "../ui";
+import { useState } from "react";
+import { AuthModal } from "../auth/AuthModal";
 
 interface LandingPageProps {
   onGetStarted: () => void;
@@ -13,11 +14,13 @@ const features = [
   { icon: "🎨", title: "3 Themes", desc: "Dark Pro, Minimal, Purple Night" },
   { icon: "📱", title: "Responsive", desc: "Looks great on every screen" },
   { icon: "💾", title: "Auto-saves", desc: "Never lose your work" },
-  { icon: "🔐", title: "Auth (soon)", desc: "Accounts and saved portfolios" },
+  { icon: "🔐", title: "Auth", desc: "Accounts and saved portfolios" },
   { icon: "🤖", title: "AI (soon)", desc: "Bio writer and job matcher" },
 ];
 
 export function LandingPage({ onGetStarted }: LandingPageProps) {
+  const [showAuth, setShowAuth] = useState(false);
+
   return (
     <div
       style={{
@@ -49,8 +52,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           DevFolio
         </div>
         <div style={{ display: "flex", gap: 12 }}>
-          <Button
-            onClick={onGetStarted}
+          <button
+            onClick={() => setShowAuth(true)}
             style={{
               background: "transparent",
               color: "#94a3b8",
@@ -62,8 +65,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             }}
           >
             Sign In
-          </Button>
-          <Button
+          </button>
+          <button
             onClick={onGetStarted}
             style={{
               background: "linear-gradient(135deg, #6366f1, #4f46e5)",
@@ -77,7 +80,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             }}
           >
             Get Started →
-          </Button>
+          </button>
         </div>
       </nav>
 
@@ -154,8 +157,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             justifyContent: "center",
           }}
         >
-          <Button
-            onClick={onGetStarted}
+          <button
+            onClick={() => setShowAuth(true)}
             style={{
               background: "linear-gradient(135deg, #6366f1, #4f46e5)",
               color: "#fff",
@@ -168,8 +171,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             }}
           >
             Build My Portfolio →
-          </Button>
-          <Button
+          </button>
+          <button
             onClick={onGetStarted}
             style={{
               background: "transparent",
@@ -181,8 +184,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               fontSize: 16,
             }}
           >
-            See Example
-          </Button>
+            Try Without Account
+          </button>
         </div>
 
         {/* Features grid */}
@@ -205,7 +208,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 borderRadius: 12,
                 padding: 20,
                 textAlign: "left",
-                transition: "border-color .2s",
               }}
             >
               <div style={{ fontSize: 24, marginBottom: 10 }}>{f.icon}</div>
@@ -237,9 +239,19 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           borderTop: "1px solid #1f2937",
         }}
       >
-        Built with React · TypeScript · Tailwind — by a developer learning in
-        public
+        Built with React · TypeScript · Node.js · PostgreSQL
       </div>
+
+      {/* Auth Modal */}
+      {showAuth && (
+        <AuthModal
+          onClose={() => setShowAuth(false)}
+          onSuccess={() => {
+            setShowAuth(false);
+            onGetStarted();
+          }}
+        />
+      )}
     </div>
   );
 }
