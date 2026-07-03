@@ -7,6 +7,7 @@ import { LandingPage } from "./components/landing/LandingPage";
 import { BuilderPanel } from "./components/builder/BuilderPanel";
 import { PortfolioPreview } from "./components/portfolio/PortfolioPreview";
 import { Button } from "./components/ui";
+import { useViewerCount } from "./hooks/useViewerCount";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const portfolio = usePortfolioStore((state) => state.portfolio);
@@ -137,6 +138,7 @@ function PreviewPage() {
   const portfolio = usePortfolioStore((state) => state.portfolio);
   const navigate = useNavigate();
   const slug = portfolio.name.toLowerCase().replace(/\s+/g, "") || "yourname";
+  const viewerCount = useViewerCount(slug);
 
   return (
     <div
@@ -160,9 +162,34 @@ function PreviewPage() {
         >
           devfolio.app/{slug}
         </span>
-        <span style={{ fontSize: 12, color: "#4ade80", fontWeight: 600 }}>
-          ✓ Live Preview
-        </span>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {viewerCount > 0 && (
+            <span
+              style={{
+                fontSize: 12,
+                color: "#f59e0b",
+                display: "flex",
+                alignItems: "center",
+                gap: 4,
+              }}
+            >
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: "#f59e0b",
+                  display: "inline-block",
+                  animation: "pulse 2s infinite",
+                }}
+              />
+              {viewerCount} viewing live
+            </span>
+          )}
+          <span style={{ fontSize: 12, color: "#4ade80", fontWeight: 600 }}>
+            ✓ Live Preview
+          </span>
+        </div>
       </div>
       <div style={{ flex: 1 }}>
         <PortfolioPreview />

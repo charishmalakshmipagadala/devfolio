@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { usePortfolioStore } from "../../../store/portfolioStore";
 import { Input, TextArea } from "../../ui";
+import { useAvatarUpload } from "../../../hooks/useAvatarUpload";
 
 const basicSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -23,6 +24,8 @@ type BasicFormData = z.infer<typeof basicSchema>;
 export function BasicTab() {
   const portfolio = usePortfolioStore((s) => s.portfolio);
   const setField = usePortfolioStore((s) => s.setField);
+  const avatar = usePortfolioStore((s) => s.portfolio.avatar);
+  const { uploadAvatar, uploading, error: uploadError } = useAvatarUpload();
   const setSocial = usePortfolioStore((s) => s.setSocial);
 
   const {
@@ -57,6 +60,57 @@ export function BasicTab() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <Section title="Profile">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+            alignItems: "center",
+            padding: "16px 0",
+          }}
+        >
+          <div
+            style={{
+              width: 72,
+              height: 72,
+              borderRadius: "50%",
+              overflow: "hidden",
+              background: "#1f2937",
+              border: "2px solid #374151",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {avatar ? (
+              <img
+                src={avatar}
+                alt="avatar"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            ) : (
+              <span style={{ fontSize: 28 }}>👤</span>
+            )}
+          </div>
+          <label style={{ cursor: "pointer" }}>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              style={{ display: "none" }}
+              onChange={(e) =>
+                e.target.files?.[0] && uploadAvatar(e.target.files[0])
+              }
+            />
+            <span style={{ fontSize: 12, color: "#6366f1", fontWeight: 600 }}>
+              {uploading ? "Uploading..." : "Upload Photo"}
+            </span>
+          </label>
+          {uploadError && (
+            <span style={{ fontSize: 12, color: "#f87171" }}>
+              {uploadError}
+            </span>
+          )}
+        </div>
         <Input
           label="Full Name"
           placeholder="John Doe"

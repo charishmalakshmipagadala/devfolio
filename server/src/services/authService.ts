@@ -6,6 +6,7 @@ import {
   verifyRefreshToken,
 } from "../utils/jwt";
 import { AppError } from "../middleware/errorHandler";
+import { emailQueue } from "../config/queue";
 
 export const authService = {
   async signup(email: string, password: string, name: string) {
@@ -28,12 +29,17 @@ export const authService = {
       email: user.email,
     });
 
-    // Store refresh token
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
 
     await prisma.refreshToken.create({
       data: { token: refreshToken, userId: user.id, expiresAt },
+    });
+
+    // Queue welcome email — non-blocking
+    await emailQueue.add("welcome-email", {
+      type: "welcome",
+      data: { email: user.email, name: user.name },
     });
 
     return { user, accessToken, refreshToken };
@@ -77,7 +83,6 @@ export const authService = {
       userId: payload.userId,
       email: payload.email,
     });
-
     return { accessToken };
   },
 

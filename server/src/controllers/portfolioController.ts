@@ -1,29 +1,34 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { z } from "zod";
 import { portfolioService } from "../services/portfolioService";
 import { sendSuccess } from "../utils/apiResponse";
 import { AuthRequest } from "../types";
 
 const createSchema = z.object({
-  slug: z.string().min(1).regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens"),
-  data: z.record(z.string(), z.unknown()),
-});
-
-const updateSchema = z.object({
+  slug: z
+    .string()
+    .min(3)
+    .max(30)
+    .regex(
+      /^[a-z0-9-]+$/,
+      "Slug can only contain lowercase letters, numbers, and hyphens",
+    ),
   data: z.record(z.string(), z.unknown()),
 });
 
 export const portfolioController = {
   async getAll(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const portfolios = await portfolioService.getAll(req.userId!);
-      return sendSuccess(res, portfolios);
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 10;
+      const result = await portfolioService.getAll(req.userId!, page, limit);
+      return sendSuccess(res, result);
     } catch (err) {
       next(err);
     }
   },
 
-  async getBySlug(req: Request, res: Response, next: NextFunction) {
+  async getBySlug(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const portfolio = await portfolioService.getBySlug(req.params.slug as string);
       return sendSuccess(res, portfolio);
@@ -44,8 +49,12 @@ export const portfolioController = {
 
   async update(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const { data } = updateSchema.parse(req.body);
-      const portfolio = await portfolioService.update(req.params.id as string, req.userId!, data);
+      const { data } = req.body;
+      const portfolio = await portfolioService.update(
+        req.params.id as string,
+        req.userId!,
+        data,
+      );
       return sendSuccess(res, portfolio, "Portfolio updated");
     } catch (err) {
       next(err);

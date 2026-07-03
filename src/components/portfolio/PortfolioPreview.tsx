@@ -80,7 +80,21 @@ function HeroSection({ portfolio, theme }: SectionProps) {
         alignItems: "flex-start",
       }}
     >
-      <Avatar name={portfolio.name || "Your Name"} size={72} />
+      {portfolio.avatar ? (
+        <img
+          src={portfolio.avatar}
+          alt={portfolio.name}
+          style={{
+            width: 72,
+            height: 72,
+            borderRadius: "50%",
+            objectFit: "cover",
+            flexShrink: 0,
+          }}
+        />
+      ) : (
+        <Avatar name={portfolio.name || "Your Name"} size={72} />
+      )}
       <div style={{ flex: 1 }}>
         <div
           style={{
